@@ -1,6 +1,8 @@
 module.exports = {
 	ignores: [
 		'media/**',
+		'test/config/fixtures/config-errors/test.js',
+		'test/config/fixtures/mjs-with-tests/**',
 		'test-tap/fixture/ava-paths/target/test.js',
 		'test-tap/fixture/{source-map-initial,syntax-error}.js',
 		'test-tap/fixture/snapshots/test-sourcemaps/build/**',
@@ -8,19 +10,32 @@ module.exports = {
 		'test-tap/fixture/report/edgecases/ast-syntax-error.js'
 	],
 	rules: {
+		'import/no-anonymous-default-export': 'off',
 		'import/no-unresolved': ['error', {commonjs: true}],
 		'no-use-extend-native/no-use-extend-native': 'off',
 		'@typescript-eslint/no-var-requires': 'off'
 	},
 	overrides: [
 		{
-			files: '*.d.ts',
+			files: 'index.d.ts',
 			rules: {
 				'@typescript-eslint/member-ordering': 'off',
 				'@typescript-eslint/method-signature-style': 'off',
 				'@typescript-eslint/prefer-readonly-parameter-types': 'off',
 				'@typescript-eslint/prefer-function-type': 'off',
 				'@typescript-eslint/unified-signatures': 'off'
+			}
+		},
+		{
+			files: [
+				'eslint-plugin-helper.js',
+				'lib/plugin-support/shared-worker-loader.js',
+				'lib/plugin-support/shared-workers.js'
+			],
+			// TODO [engine:node@>=12]: Enable when targeting Node.js 12.
+			rules: {
+				'import/no-unresolved': 'off',
+				'node/no-unsupported-features/node-builtins': 'off'
 			}
 		},
 		{
@@ -43,9 +58,10 @@ module.exports = {
 			}
 		},
 		{
-			files: 'test-tap/fixture/**/*.js',
+			files: ['test-tap/fixture/**', 'test/**/fixtures/**'],
 			rules: {
-				'import/no-extraneous-dependencies': 'off'
+				'import/no-extraneous-dependencies': 'off',
+				'import/no-unresolved': 'off'
 			}
 		}
 	],
